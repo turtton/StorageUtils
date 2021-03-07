@@ -40,30 +40,7 @@ namespace InventorySorter.patches {
             _stackButton.GetComponent<Button>().onClick.AddListener(() => {
                 if (Player.m_localPlayer.IsTeleporting() || !(bool) ___m_containerGrid) return;
 
-                var to = ___m_containerGrid.GetInventory();
-                var from = ___m_playerGrid.GetInventory();
-                TransportItems(from, to, true);
-
-                // var containerItems = to.GetAllItems();
-                // var playerItems = new List<ItemDrop.ItemData>(from.GetAllItems());
-                //
-                //
-                // foreach (var playerItem in playerItems) {
-                //     var containAmount = containerItems.FindAll(data => data.m_shared.m_name == playerItem.m_shared.m_name)
-                //         .ConvertAll(data => data.m_stack)
-                //         .Sum();
-                //     var spaceSize = playerItem.m_shared.m_maxStackSize - containAmount % playerItem.m_shared.m_maxStackSize;
-                //     var amount = spaceSize >= playerItem.m_stack ? playerItem.m_stack : spaceSize;
-                //
-                //     if (spaceSize <= 0) break;
-                //
-                //     from.RemoveItem(playerItem, amount);
-                //     var copy = playerItem.Clone();
-                //     copy.m_stack = amount;
-                //     to.AddItem(copy);
-                //     InventoryChangedMethod.Invoke(to, null);
-                //     InventoryChangedMethod.Invoke(from, null);
-                // }
+                TransportItems(___m_playerGrid.GetInventory(), ___m_containerGrid.GetInventory(), !Input.GetKeyDown(KeyCode.LeftShift));
             });
         }
 
@@ -113,13 +90,13 @@ namespace InventorySorter.patches {
         //     rectTransform.pivot = new Vector2(0.0f, 0.5f);
         // }
 
-        private static void TransportItems(Inventory from, Inventory target, bool stackOnly = false) {
+        private static void TransportItems(Inventory from, Inventory target, bool stackOnly) {
             var fromInvItems = new List<ItemDrop.ItemData>(from.GetAllItems());
             var targetItems = target.GetAllItems();
 
             foreach (var playerItem in fromInvItems) {
                 var searchedItems = targetItems.FindAll(data => data.m_shared.m_name == playerItem.m_shared.m_name);
-                
+
                 if (stackOnly && searchedItems.Count <= 0) continue;
 
                 InventorySorter.LOGGER.LogInfo("trans");
