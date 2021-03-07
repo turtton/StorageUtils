@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using InventorySorter.patches;
 
@@ -8,9 +9,10 @@ namespace InventorySorter {
 
         public static void SortInventory(Inventory inventory) {
             var player = Player.m_localPlayer;
+            var isPlayerInventory = player.GetInventory() == inventory;
             var items = new List<ItemDrop.ItemData>(inventory.GetAllItems());
             // items.Sort((firstData, secondData) => string.Compare(firstData.m_shared.m_name, secondData.m_shared.m_name, StringComparison.Ordinal));
-            var result = new List<ItemDrop.ItemData>();
+            var compared = new List<ItemDrop.ItemData>();
             var sorted = new List<string>();
             foreach (var itemData in items) {
                 var shared = itemData.m_shared;
@@ -19,7 +21,7 @@ namespace InventorySorter {
                 sorted.Add(shared.m_name);
 
                 var targetItems = items.FindAll(data => data.m_shared.m_name == itemData.m_shared.m_name)
-                    .FindAll(data => !player.IsItemEquiped(data) && !(player.GetInventory() == inventory && data.m_gridPos.y == 0));
+                    .FindAll(data => !player.IsItemEquiped(data) && !(isPlayerInventory && data.m_gridPos.y == 0));
 
                 foreach (var item in targetItems) {
                     inventory.RemoveItem(item);
@@ -34,20 +36,44 @@ namespace InventorySorter {
                         for (var i = 0; i < stacks; i++) {
                             var maxStack = itemData.Clone();
                             maxStack.m_stack = shared.m_maxStackSize;
-                            result.Add(maxStack);
+                            compared.Add(maxStack);
                         }
                     }
 
                     var surplus = itemData.Clone();
                     surplus.m_stack = amount;
-                    result.Add(surplus);
+                    compared.Add(surplus);
                 } else {
-                    result.AddRange(targetItems);
+                    compared.AddRange(targetItems);
                 }
             }
 
+            compared.Sort((firstData, secondData) => string.Compare(firstData.m_shared.m_name, secondData.m_shared.m_name, StringComparison.Ordinal));
+
+            var result = new List<ItemDrop.ItemData>();
+            foreach (var unStackableItem in compared.FindAll(data => InventoryAccessor.TopFirst(inventory, data))) {
+                compared.Remove(unStackableItem);
+                result.Add(unStackableItem);
+            }
+
+            result.AddRange(compared);
+
+            var x = 0;
+            var y = isPlayerInventory ? 1 : 0;
             foreach (var item in result) {
-                inventory.AddItem(item);
+                while (true) {
+                    var current = inventory.GetItemAt(x, y);
+                    if (current is null) {
+                        item.m_gridPos = new Vector2i(x, y);
+                        inventory.GetAllItems().Add(item);
+                        break;
+                    }
+
+                    if (++x <= inventory.GetWidth()) continue;
+
+                    ++y;
+                    x = 0;
+                }
             }
 
             InventoryAccessor.Changed(inventory);
@@ -62,7 +88,7 @@ namespace InventorySorter {
             var targetItems = target.GetAllItems();
 
             foreach (var item in fromInvItems) {
-                if (item.m_shared.m_questItem || player.IsItemEquiped(item) || (player.GetInventory() == from && item.m_gridPos.y == 0)) continue;
+                if (item.m_shared.m_questItem || player.IsItemEquiped(item) || player.GetInventory() == from && item.m_gridPos.y == 0) continue;
 
                 var searchedItems = targetItems.FindAll(data => data.m_shared.m_name == item.m_shared.m_name);
 
