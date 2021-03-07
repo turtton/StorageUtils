@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventorySorter", "InventorySorter\InventorySorter.csproj", "{A416D121-EBAF-4770-B37D-B26D448BA5A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageUtils", "StorageUtils\StorageUtils.csproj", "{A416D121-EBAF-4770-B37D-B26D448BA5A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

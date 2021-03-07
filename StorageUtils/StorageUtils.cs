@@ -5,8 +5,8 @@ using HarmonyLib;
 using UnityEngine;
 
 namespace InventorySorter {
-    [BepInPlugin("net.github.turtton.plugins.inventorysorter", "Inventory Sorter", "1.0.0")]
-    public class InventorySorter : BaseUnityPlugin {
+    [BepInPlugin("net.github.turtton.plugins.StorageUtils", "StorageUtils", "1.0.0")]
+    public class StorageUtils : BaseUnityPlugin {
         public static ManualLogSource LOGGER;
         private Harmony _harmony;
 

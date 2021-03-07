@@ -33,39 +33,39 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony, Version=2.3.2.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\0Harmony.dll</HintPath>
+            <HintPath>..\Libs\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="assembly_utils, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\assembly_utils.dll</HintPath>
+            <HintPath>..\Libs\assembly_utils.dll</HintPath>
         </Reference>
         <Reference Include="assembly_valheim, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\assembly_valheim.dll</HintPath>
+            <HintPath>..\Libs\assembly_valheim.dll</HintPath>
         </Reference>
         <Reference Include="BepInEx, Version=5.4.8.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\BepInEx.dll</HintPath>
+            <HintPath>..\Libs\BepInEx.dll</HintPath>
         </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\UnityEngine.dll</HintPath>
+            <HintPath>..\Libs\UnityEngine.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\UnityEngine.AnimationModule.dll</HintPath>
+            <HintPath>..\Libs\UnityEngine.AnimationModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
+            <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\UnityEngine.InputLegacyModule.dll</HintPath>
+            <HintPath>..\Libs\UnityEngine.InputLegacyModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
+            <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="InventorySorter.cs" />
+        <Compile Include="StorageUtils.cs" />
         <Compile Include="InventoryUtils.cs" />
         <Compile Include="patches\InventoryGuiPatch.cs" />
         <Compile Include="patches\InventoryPatch.cs" />

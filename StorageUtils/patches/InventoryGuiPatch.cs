@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace InventorySorter.patches {
     [HarmonyPatch(typeof(InventoryGui), "Show")]
