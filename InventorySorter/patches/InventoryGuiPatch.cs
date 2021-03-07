@@ -20,7 +20,7 @@ namespace InventorySorter.patches {
             if (!instance.IsContainerOpen()) return;
 
             _sortButton = PrepareButton(instance, "sort", "←");
-            RelocateButtons(_sortButton, 0f);
+            RelocateButtons(_sortButton, 0.3f);
             _sortButton.GetComponent<Button>().onClick.AddListener(() => {
                 if (Player.m_localPlayer.IsTeleporting() || !(bool) ___m_containerGrid) return;
 
@@ -36,7 +36,7 @@ namespace InventorySorter.patches {
             });
 
             _stackButton = PrepareButton(instance, "stack", "↓");
-            RelocateButtons(_stackButton, 0.8f);
+            RelocateButtons(_stackButton, 1.5f);
             _stackButton.GetComponent<Button>().onClick.AddListener(() => {
                 if (Player.m_localPlayer.IsTeleporting() || !(bool) ___m_containerGrid) return;
 
