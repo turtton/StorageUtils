@@ -20,10 +20,11 @@ namespace InventorySorter {
 
                 var targetItems = items.FindAll(data => data.m_shared.m_name == itemData.m_shared.m_name)
                     .FindAll(data => !player.IsItemEquiped(data) && !(player.GetInventory() == inventory && data.m_gridPos.y == 0));
-                
+
                 foreach (var item in targetItems) {
                     inventory.RemoveItem(item);
                 }
+
                 if (shared.m_maxStackSize > 1) {
                     var amount = targetItems.ConvertAll(data => data.m_stack).Sum();
                     var stacks = amount / shared.m_maxStackSize;
@@ -44,7 +45,7 @@ namespace InventorySorter {
                     result.AddRange(targetItems);
                 }
             }
-            
+
             foreach (var item in result) {
                 inventory.AddItem(item);
             }
@@ -62,7 +63,7 @@ namespace InventorySorter {
 
             foreach (var item in fromInvItems) {
                 if (item.m_shared.m_questItem || player.IsItemEquiped(item) || (player.GetInventory() == from && item.m_gridPos.y == 0)) continue;
-                
+
                 var searchedItems = targetItems.FindAll(data => data.m_shared.m_name == item.m_shared.m_name);
 
                 if (stackOnly && searchedItems.Count <= 0) continue;
@@ -74,9 +75,9 @@ namespace InventorySorter {
                 if (spaceSize <= 0) continue;
 
                 player.RemoveFromEquipQueue(item);
-                
+
                 from.RemoveItem(item, amount);
-                
+
                 var copy = item.Clone();
                 copy.m_stack = amount;
                 target.AddItem(copy);

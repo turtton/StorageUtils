@@ -23,6 +23,7 @@ namespace InventorySorter {
 
         private readonly FieldInfo _containerGridField = typeof(InventoryGui)
             .GetField("m_containerGrid", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+
         private readonly FieldInfo _playerGridField = typeof(InventoryGui)
             .GetField("m_playerGrid", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
 
@@ -34,8 +35,8 @@ namespace InventorySorter {
         private void Update() {
             var instance = InventoryGui.instance;
             if (instance is null) return;
-            
-            
+
+
             var animator = (Animator) _animatorField?.GetValue(instance);
             if (!(animator is null) && (!Input.GetMouseButtonDown(2) || !animator.GetBool(Visible))) return;
 
@@ -45,6 +46,7 @@ namespace InventorySorter {
             } else {
                 inventoryGrid = (InventoryGrid) _playerGridField?.GetValue(instance);
             }
+
             if (!(inventoryGrid is null)) InventoryUtils.SortInventory(inventoryGrid.GetInventory());
         }
     }
