@@ -32,13 +32,7 @@ namespace InventorySorter.patches {
                     inventory.AddItem(item);
                 }
 
-                try {
-                    InventoryChangedMethod?.Invoke(inventory, null);
-                }
-                catch (NullReferenceException e) {
-                    System.Console.WriteLine(e);
-                    throw;
-                }
+                InventoryChangedMethod?.Invoke(inventory, null);
             });
 
             _stackButton = PrepareButton(instance, "stack", "↓");
