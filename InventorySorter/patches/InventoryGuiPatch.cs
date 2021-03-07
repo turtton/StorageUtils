@@ -40,7 +40,7 @@ namespace InventorySorter.patches {
             _stackButton.GetComponent<Button>().onClick.AddListener(() => {
                 if (Player.m_localPlayer.IsTeleporting() || !(bool) ___m_containerGrid) return;
 
-                TransportItems(___m_playerGrid.GetInventory(), ___m_containerGrid.GetInventory(), !Input.GetKeyDown(KeyCode.LeftShift));
+                TransportItems(___m_playerGrid.GetInventory(), ___m_containerGrid.GetInventory(), !Input.GetKey(KeyCode.LeftShift));
             });
         }
 
@@ -99,8 +99,6 @@ namespace InventorySorter.patches {
 
                 if (stackOnly && searchedItems.Count <= 0) continue;
 
-                InventorySorter.LOGGER.LogInfo("trans");
-
                 var containAmount = searchedItems.ConvertAll(data => data.m_stack).Sum();
                 var spaceSize = playerItem.m_shared.m_maxStackSize - containAmount % playerItem.m_shared.m_maxStackSize;
                 var amount = spaceSize >= playerItem.m_stack ? playerItem.m_stack : spaceSize;
@@ -111,9 +109,10 @@ namespace InventorySorter.patches {
                 var copy = playerItem.Clone();
                 copy.m_stack = amount;
                 target.AddItem(copy);
-                InventoryChangedMethod.Invoke(target, null);
-                InventoryChangedMethod.Invoke(from, null);
             }
+
+            InventoryChangedMethod.Invoke(target, null);
+            InventoryChangedMethod.Invoke(from, null);
         }
     }
 }
