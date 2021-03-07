@@ -20,8 +20,9 @@ namespace InventorySorter {
 
                 sorted.Add(shared.m_name);
 
-                var targetItems = items.FindAll(data => data.m_shared.m_name == itemData.m_shared.m_name)
-                    .FindAll(data => !player.IsItemEquiped(data) && !(isPlayerInventory && data.m_gridPos.y == 0));
+                var targetItems = items
+                    .FindAll(data => data.m_shared.m_name == itemData.m_shared.m_name)
+                    .FindAll(data => !data.m_shared.m_questItem && !player.IsItemEquiped(data) && !(isPlayerInventory && data.m_gridPos.y == 0));
 
                 foreach (var item in targetItems) {
                     inventory.RemoveItem(item);
@@ -40,9 +41,11 @@ namespace InventorySorter {
                         }
                     }
 
-                    var surplus = itemData.Clone();
-                    surplus.m_stack = amount;
-                    compared.Add(surplus);
+                    if (amount > 0) {
+                        var surplus = itemData.Clone();
+                        surplus.m_stack = amount;
+                        compared.Add(surplus);
+                    }
                 } else {
                     compared.AddRange(targetItems);
                 }
@@ -69,9 +72,12 @@ namespace InventorySorter {
                         break;
                     }
 
-                    if (++x <= inventory.GetWidth()) continue;
+                    if (++x <= inventory.GetWidth() - 1) continue;
 
-                    ++y;
+                    if (++y >= inventory.GetHeight()) {
+                        throw new Exception("out of slot height!!");
+                    }
+
                     x = 0;
                 }
             }
