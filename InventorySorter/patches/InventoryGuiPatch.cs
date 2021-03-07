@@ -26,13 +26,48 @@ namespace InventorySorter.patches {
 
                 var inventory = ___m_containerGrid.GetInventory();
                 var items = new List<ItemDrop.ItemData>(inventory.GetAllItems());
-                items.Sort((firstData, secondData) => string.Compare(firstData.m_shared.m_name, secondData.m_shared.m_name, StringComparison.Ordinal));
+                // items.Sort((firstData, secondData) => string.Compare(firstData.m_shared.m_name, secondData.m_shared.m_name, StringComparison.Ordinal));
+                var result = new List<ItemDrop.ItemData>();
+                var sorted = new List<string>();
+                foreach (var itemData in items) {
+                    var shared = itemData.m_shared;
+                    if (sorted.Contains(shared.m_name)) continue;
+
+                    sorted.Add(shared.m_name);
+
+                    var targetItems = items.FindAll(data => data.m_shared.m_name == itemData.m_shared.m_name);
+                    InventorySorter.LOGGER.LogInfo("find" + targetItems.ConvertAll(input => input.m_shared.m_name).Join());
+                    if (shared.m_maxStackSize > 1) {
+                        var amount = targetItems.ConvertAll(data => data.m_stack).Sum();
+                        var stacks = amount / shared.m_maxStackSize;
+                        amount -= stacks * shared.m_maxStackSize;
+
+                        InventorySorter.LOGGER.LogInfo("amount:" + amount + ",stacks:" + stacks);
+                        if (stacks > 0) {
+                            for (var i = 0; i < shared.m_maxStackSize; i++) {
+                                var maxStack = itemData.Clone();
+                                maxStack.m_stack = shared.m_maxStackSize;
+                                result.Add(maxStack);
+                            }
+                        }
+
+                        var surplus = itemData.Clone();
+                        surplus.m_stack = amount;
+                        result.Add(surplus);
+                    }
+                    else {
+                        result.AddRange(targetItems);
+                    }
+                }
+
                 inventory.RemoveAll();
-                foreach (var item in items) {
+                foreach (var item in result) {
                     inventory.AddItem(item);
                 }
 
                 InventoryChangedMethod?.Invoke(inventory, null);
+
+                // inventory.GetAllItems().ForEach(data => InventorySorter.LOGGER.LogInfo(data.m_shared.m_name + ":" + data.m_gridPos));
             });
 
             _stackButton = PrepareButton(instance, "stack", "↓");
