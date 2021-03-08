@@ -8,7 +8,7 @@ This is a valheim mod adds buttons to storage GUIs.
 
 # Links
 
-- [NEXUSMODS]()
+- [NEXUSMODS](https://www.nexusmods.com/valheim/mods/337)
 - [GitHub](https://github.com/wataamewatagashi/StorageUtils/tree/master)
 
 # LICENSE
