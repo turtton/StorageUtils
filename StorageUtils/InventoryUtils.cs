@@ -88,31 +88,61 @@ namespace InventorySorter {
         }
 
         public static void TransportItems(Inventory from, Inventory target, bool stackOnly) {
-            var player = Player.m_localPlayer;
-
-            var fromInvItems = new List<ItemDrop.ItemData>(from.GetAllItems());
             var targetItems = target.GetAllItems();
+            var targetItemNames = targetItems.ConvertAll(input => input.m_shared.m_name);
+            var fromInvItems = from.GetAllItems()
+                .FindAll(data => !stackOnly || !InventoryAccessor.TopFirst(from, data) && targetItemNames.Contains(data.m_shared.m_name));
 
-            foreach (var item in fromInvItems) {
-                if (item.m_shared.m_questItem || player.IsItemEquiped(item) || player.GetInventory() == from && item.m_gridPos.y == 0) continue;
+            var player = Player.m_localPlayer;
+            if (player.GetInventory() == from) {
+                fromInvItems = fromInvItems.FindAll(data => !player.IsItemEquiped(data) && !player.IsItemQueued(data))
+                    .FindAll(data => stackOnly || data.m_gridPos.y != 0);
+            }
 
-                var searchedItems = targetItems.FindAll(data => data.m_shared.m_name == item.m_shared.m_name);
+            foreach (var name in fromInvItems.ConvertAll(input => input.m_shared.m_name).Distinct()) {
+                var items = fromInvItems.FindAll(data => data.m_shared.m_name == name);
 
-                if (stackOnly && searchedItems.Count <= 0) continue;
+                var item = items.First().Clone();
+                var maxStackSize = item.m_shared.m_maxStackSize;
 
-                var containAmount = searchedItems.ConvertAll(data => data.m_stack).Sum();
-                var spaceSize = item.m_shared.m_maxStackSize - containAmount % item.m_shared.m_maxStackSize;
-                var amount = spaceSize >= item.m_stack ? item.m_stack : spaceSize;
+                if (maxStackSize <= 1) {
+                    foreach (var itemData in items) {
+                        if (target.AddItem(itemData)) {
+                            from.RemoveItem(itemData);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    var currentAmount = items.ConvertAll(input => input.m_stack).Sum();
+                    var surplus = targetItems.FindAll(data => data.m_shared.m_name == name).ConvertAll(input => input.m_stack).Sum() % maxStackSize;
 
-                if (spaceSize <= 0) continue;
+                    var emptyAmount = surplus == 0 ? 0 : maxStackSize - surplus;
+                    emptyAmount += target.GetEmptySlots() * maxStackSize;
 
-                player.RemoveFromEquipQueue(item);
+                    var movableAmount = emptyAmount >= currentAmount ? currentAmount : emptyAmount;
 
-                from.RemoveItem(item, amount);
+                    if (movableAmount <= 0) continue;
 
-                var copy = item.Clone();
-                copy.m_stack = amount;
-                target.AddItem(copy);
+                    var stackAmount = movableAmount / maxStackSize;
+                    var amount = movableAmount - stackAmount * maxStackSize;
+
+                    if (stackAmount > 0) {
+                        for (var i = 0; i < stackAmount; i++) {
+                            var clone = item.Clone();
+                            clone.m_stack = maxStackSize;
+                            target.AddItem(clone);
+                        }
+                    }
+
+                    if (amount > 0) {
+                        var clone = item.Clone();
+                        clone.m_stack = amount;
+                        target.AddItem(clone);
+                    }
+
+                    from.RemoveItem(name, movableAmount);
+                }
             }
 
             InventoryAccessor.Changed(target);
