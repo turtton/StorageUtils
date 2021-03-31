@@ -2,6 +2,11 @@
 
 This is a valheim mod adds buttons to storage GUIs.
 
+# Installation
+
+1. Install BepInExPack Valheim
+2. Install StorageUtils.dll in `Valheim/BepinEx/plugins`
+
 # Requires
 
 - [BepInEx](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
