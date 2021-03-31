@@ -17,7 +17,7 @@ namespace StorageUtils.patches {
             _sortButton.GetComponent<Button>().onClick.AddListener(() => {
                 if (Player.m_localPlayer.IsTeleporting() || !(bool) ___m_containerGrid) return;
 
-                InventoryUtils.SortInventory(___m_containerGrid.GetInventory());
+                InventoryUtils.SortInventory(___m_containerGrid.GetInventory(), false);
             });
 
             _stackButton = PrepareButton(__instance, "stack", "↓");

@@ -44,6 +44,9 @@
         <Reference Include="BepInEx, Version=5.4.8.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>..\Libs\BepInEx.dll</HintPath>
         </Reference>
+        <Reference Include="EquipmentAndQuickSlots, Version=2.0.4.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>..\Libs\EquipmentAndQuickSlots.dll</HintPath>
+        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
@@ -65,6 +68,8 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="CheckDependFiles.cs" />
+        <Compile Include="EAQSWrapper.cs" />
         <Compile Include="StorageUtils.cs" />
         <Compile Include="InventoryUtils.cs" />
         <Compile Include="patches\InventoryGuiPatch.cs" />

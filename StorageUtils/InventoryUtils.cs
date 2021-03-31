@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using InventorySorter.patches;
+using System.Reflection;
+using StorageUtils.patches;
 
 namespace StorageUtils {
     public static class InventoryUtils {
         // private static readonly MethodInfo InventoryChangedMethod = typeof(Inventory).GetMethod("Changed", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic);
 
-        public static void SortInventory(Inventory inventory) {
+        private static readonly FieldInfo _inventoryField = typeof(Inventory)
+            .GetField("m_inventory", BindingFlags.Instance | BindingFlags.GetField | BindingFlags.NonPublic);
+
+        public static void SortInventory(Inventory inventory, bool isPlayerInventory) {
             var player = Player.m_localPlayer;
-            var isPlayerInventory = player.GetInventory() == inventory;
             var items = new List<ItemDrop.ItemData>(inventory.GetAllItems());
             // items.Sort((firstData, secondData) => string.Compare(firstData.m_shared.m_name, secondData.m_shared.m_name, StringComparison.Ordinal));
             var compared = new List<ItemDrop.ItemData>();
@@ -64,11 +67,13 @@ namespace StorageUtils {
             var x = 0;
             var y = isPlayerInventory ? 1 : 0;
             foreach (var item in result) {
+                var invList = (List<ItemDrop.ItemData>) _inventoryField?.GetValue(inventory);
                 while (true) {
                     var current = inventory.GetItemAt(x, y);
                     if (current is null) {
                         item.m_gridPos = new Vector2i(x, y);
-                        inventory.GetAllItems().Add(item);
+                        // inventory.GetAllItems().Add(item);
+                        invList?.Add(item);
                         break;
                     }
 

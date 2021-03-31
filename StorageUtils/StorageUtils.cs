@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -6,8 +7,11 @@ using UnityEngine;
 
 namespace StorageUtils {
     [BepInPlugin("net.github.turtton.plugins.StorageUtils", "StorageUtils", "1.0.0")]
+    [BepInDependency("randyknapp.mods.equipmentandquickslots", BepInDependency.DependencyFlags.SoftDependency)]
     public class StorageUtils : BaseUnityPlugin {
         public static ManualLogSource LOGGER;
+        public static bool isEAQSLoaded;
+
         private Harmony _harmony;
 
         private void Awake() {
@@ -15,6 +19,12 @@ namespace StorageUtils {
 
             _harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(),
                 "net.github.turtton.plugins.patch");
+
+            try {
+                isEAQSLoaded = CheckDependFiles.IsEAQSLoaded();
+            }
+            catch (FileNotFoundException) {
+            }
         }
 
         private void OnDestroy() {
@@ -54,11 +64,23 @@ namespace StorageUtils {
             InventoryGrid inventoryGrid;
             if (instance?.IsContainerOpen() == true) {
                 inventoryGrid = (InventoryGrid) _containerGridField?.GetValue(instance);
+                if (inventoryGrid is null) {
+                    return;
+                }
+
+                InventoryUtils.SortInventory(inventoryGrid.GetInventory(), false);
             } else {
                 inventoryGrid = (InventoryGrid) _playerGridField?.GetValue(instance);
-            }
+                if (inventoryGrid is null) {
+                    return;
+                }
 
-            if (!(inventoryGrid is null)) InventoryUtils.SortInventory(inventoryGrid.GetInventory());
+                if (isEAQSLoaded) {
+                    EAQSWrapper.SortPlayerInventory(inventoryGrid.GetInventory());
+                } else {
+                    InventoryUtils.SortInventory(inventoryGrid.GetInventory(), true);
+                }
+            }
         }
     }
 }
