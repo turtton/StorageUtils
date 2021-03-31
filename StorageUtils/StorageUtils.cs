@@ -40,13 +40,13 @@ namespace StorageUtils {
 
             // if (!(animator is null) && ((!ZInput.IsMouseActive() || !Input.GetMouseButtonDown(2)) && (!ZInput.IsGamepadActive() || !ZInput.GetButtonDown("joyrstick")) || !animator.GetBool(Visible))) return;
 
-            //Is Opening Player Inventory
+            //Is Opening Inventory
             if (!(animator is null) && !animator.GetBool(Visible)) {
                 return;
             }
 
             //Is pushed short cut button
-            if ((!ZInput.IsMouseActive() || !Input.GetMouseButtonDown(2)) && (!ZInput.IsGamepadActive() || !ZInput.GetButtonDown("joystick"))) {
+            if ((!ZInput.IsMouseActive() || !Input.GetMouseButtonDown(2)) && (!ZInput.IsGamepadActive() || !ZInput.GetButtonDown("JoyRStick"))) {
                 return;
             }
 
