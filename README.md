@@ -11,6 +11,10 @@ This is a valheim mod adds buttons to storage GUIs.
 
 - [BepInEx](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
 
+# Compatibility
+
+- [EquipmentAndQuickSlots(EAQS)](https://www.nexusmods.com/valheim/mods/92)
+
 # Links
 
 - [NEXUSMODS](https://www.nexusmods.com/valheim/mods/337)
@@ -37,7 +41,9 @@ Put in `StorageUtils/Libs` folder
 
 # Changelogs
 
-| version | note            |
-| ------- | --------------- |
-| 1.0.0   | First Release!! |
+| version | note                                                 |
+| ------- | ---------------------------------------------------- |
+| 1.0.0   | First Release!!                                      |
+| 1.1.0   | Fix a serious bug(EAQS support) / controller support |
+
 
