@@ -36,9 +36,20 @@ namespace InventorySorter {
             var instance = InventoryGui.instance;
             if (instance is null) return;
 
-
             var animator = (Animator) _animatorField?.GetValue(instance);
-            if (!(animator is null) && (!Input.GetMouseButtonDown(2) || !animator.GetBool(Visible))) return;
+
+            // if (!(animator is null) && ((!ZInput.IsMouseActive() || !Input.GetMouseButtonDown(2)) && (!ZInput.IsGamepadActive() || !ZInput.GetButtonDown("joyrstick")) || !animator.GetBool(Visible))) return;
+
+            //Is Opening Player Inventory
+            if (!(animator is null) && !animator.GetBool(Visible)) {
+                return;
+            }
+
+            //Is pushed short cut button
+            if ((!ZInput.IsMouseActive() || !Input.GetMouseButtonDown(2)) && (!ZInput.IsGamepadActive() || !ZInput.GetButtonDown("joystick"))) {
+                return;
+            }
+
 
             InventoryGrid inventoryGrid;
             if (instance?.IsContainerOpen() == true) {
