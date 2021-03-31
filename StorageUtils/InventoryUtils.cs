@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using InventorySorter.patches;
 
-namespace InventorySorter {
+namespace StorageUtils {
     public static class InventoryUtils {
         // private static readonly MethodInfo InventoryChangedMethod = typeof(Inventory).GetMethod("Changed", BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic);
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using HarmonyLib;
 
-namespace InventorySorter.patches {
+namespace StorageUtils.patches {
     [HarmonyPatch]
     public class InventoryAccessor {
         [HarmonyReversePatch]

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace InventorySorter.patches {
+namespace StorageUtils.patches {
     [HarmonyPatch(typeof(InventoryGui), "Show")]
     public static class InventoryGuiShowMethodPatch {
         private static RectTransform _sortButton;

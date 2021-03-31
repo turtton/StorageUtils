@@ -4,7 +4,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
 
-namespace InventorySorter {
+namespace StorageUtils {
     [BepInPlugin("net.github.turtton.plugins.StorageUtils", "StorageUtils", "1.0.0")]
     public class StorageUtils : BaseUnityPlugin {
         public static ManualLogSource LOGGER;
